@@ -35,6 +35,10 @@ const start = async() => {
                 {
                     name: 'add department',
                     value: 'ADD DEPT'
+                },
+                {
+                    name: 'exit application',
+                    value: 'EXIT'
                 }
             ]
         }
@@ -50,23 +54,25 @@ const start = async() => {
 
     switch(selection){
         case 'VIEW EMP': 
-            employee.viewEmployee()
+            employee.viewEmployee(start)
             break
         case 'VIEW ROLE':
-            role.viewRole()
+            role.viewRole(start)
             break
         case 'VIEW DEPT':
-            department.viewDepartment()
+            department.viewDepartment(start)
             break
         case 'ADD EMP':
-            employee.addEmployee()
+            employee.addEmployee(start)
             break
         case 'ADD ROLE':
-            role.addRole()
+            role.addRole(start)
             break
         case 'ADD DEPT':
-            department.addDepartment()
+            department.addDepartment(start)
             break
+        default:
+            process.exit(0)
     }
 
 }

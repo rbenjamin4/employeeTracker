@@ -1,8 +1,10 @@
 const sequelize = require('./config/connection')
+require('console.table')
 
-const viewDepartment = async() => {
+const viewDepartment = async(start) => {
     const result = await sequelize.query('SELECT * FROM department')
-    console.log(result[0])
+    console.table(result[0])
+    start()
 }
 
 const addDepartment = async() => {
