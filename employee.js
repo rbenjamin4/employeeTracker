@@ -5,7 +5,7 @@ require('console.table')
 const viewEmployee = async(start) => {
     const result = await sequelize.query('SELECT * FROM employee')
     console.table(result[0])
-    start()
+    return result[0]
 }
 
 const viewManagers = async() => {
@@ -21,15 +21,15 @@ const viewRole = async() => {
 }
 
 const addEmployee = async(start) => {
-    const allEmployees = await viewManagers()
+    const allManagers = await viewManagers()
     const allRoles = await viewRole()
     let rolePrompt = []
-    console.table(allEmployees)
+    console.table(allManagers)
     let managerPrompt = []
-    for(let i = 0; i < allEmployees.length; i++){
+    for(let i = 0; i < allManagers.length; i++){
         const object = {
-            name: allEmployees[i].first_name + ' ' + allEmployees[i].last_name,
-            value: allEmployees[i].id
+            name: allManagers[i].first_name + ' ' + allManagers[i].last_name,
+            value: allManagers[i].id
         }
         managerPrompt.push(object)
     }
@@ -71,8 +71,51 @@ const addEmployee = async(start) => {
     })
 }
 
+const updateEmployee = async(start) => {
+    const allEmployees = await viewEmployee()
+    const allRoles = await viewRole()
+    let rolePrompt = []
+    console.table(allEmployees)
+    let employeePrompt = []
+    for(let i = 0; i < allEmployees.length; i++){
+        const object = {
+            name: allEmployees[i].first_name + ' ' + allEmployees[i].last_name,
+            value: allEmployees[i].id
+        }
+        employeePrompt.push(object)
+    }
+    for(let i = 0; i < allRoles.length; i++){
+        const object = {
+            name: allRoles[i].title, 
+            value: allRoles[i].id
+        }
+        rolePrompt.push(object)
+    }
+    console.table(rolePrompt)
+    const response = await inquirer.prompt([
+    { 
+        type: 'list',
+        message: 'Please select the employee you would like to update',
+        name: 'employee',
+        choices: employeePrompt
+    },
+    {
+        type: 'list',
+        message: 'Please select the employee\'s new role',
+        name: 'role',
+        choices: rolePrompt
+    }
+    ]).then(async ({employee, role}) => {
+        const result = await sequelize.query(`UPDATE employee SET role_id = ${role} WHERE id = ${employee}`)
+        console.table(result)
+        start()
+    })
+}
+
+
 
 module.exports = {
     viewEmployee, 
-    addEmployee
+    addEmployee,
+    updateEmployee
 }
