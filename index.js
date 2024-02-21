@@ -37,18 +37,16 @@ const start = async() => {
                     value: 'ADD DEPT'
                 },
                 {
-                    name: 'exit application',
+                    name: 'update employee',
+                    value: 'UPDATE EMP'
+                },
+                {
+                    name: 'EXIT APPLICATION',
                     value: 'EXIT'
                 }
             ]
         }
     ])
-
-    // if (response.selection === 'VIEW EMP'){
-
-    // }else if (response.selection === 'VIEW ROLE'){
-
-    // }
 
     const { selection } = response
 
@@ -70,6 +68,9 @@ const start = async() => {
             break
         case 'ADD DEPT':
             department.addDepartment(start)
+            break
+        case 'UPDATE EMP':
+            employee.updateEmployee(start)
             break
         default:
             process.exit(0)
